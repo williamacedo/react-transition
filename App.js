@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Animated} from 'react-native'
-
+import {Text, View, Animated, StyleSheet} from 'react-native';
 
 export default class App extends Component {
 
@@ -8,60 +7,38 @@ export default class App extends Component {
     super(props);
   
     this.state = {
-      widthRet: new Animated.Value(250),
-      heightRet: new Animated.Value(50),
-      opacityRet: new Animated.Value(0)
+      numero:new Animated.Value(0)
     };
 
-    Animated.sequence([
-      Animated.timing(
-        this.state.opacityRet,
-        {
-          toValue: 1,
-          duration:2000
-        }
-      ),
-
-      Animated.parallel([
-        Animated.timing(
-          this.state.heightRet,
-          {
-            toValue:100,
-            duration:2000
-          }
-        ),
-
-        Animated.timing(
-          this.state.widthRet,
-          {
-            toValue:300,
-            duration:2000
-          }
-        )          
-      ]),
-
-      Animated.timing(
-        this.state.opacityRet,
-        {
-          toValue: 0,
-          duration: 2000
-        }
-      )
-
-    ]).start();
-
+    Animated.timing(
+      this.state.numero,
+      {
+        toValue:100,
+        duration:2000
+      }
+    ).start();
   }
 
   render() {
+
+    let pct = this.state.numero.interpolate({
+      inputRange:[0, 100],
+      outputRange:['0%', '100%']
+    });
+
     return (
-      <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={styles.container}>
+        <Animated.View style={{backgroundColor: '#FF0000', height: 50, width: pct}}>
 
-        <Animated.View style={{opacity: this.state.opacityRet ,width: this.state.widthRet, height: this.state.heightRet, backgroundColor: '#FF0000'}}>
-          <Text style={{color: '#FFFFFF', fontSize: 25, textAlign:'center'}}>Texto qualquer</Text>
         </Animated.View>
-
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container:{
+    flex: 1
+  }
+});
 
